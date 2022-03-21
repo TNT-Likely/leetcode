@@ -2,13 +2,20 @@
  * 链表结构
  * @returns 
  */
-const ListNode = function () {
+function ListNode() {
     const [val, ...next] = Array.prototype.slice.call(arguments)
+    this.val = val === undefined ? 0 : val
+    this.next = next.length === 0 ? null : new ListNode(...next)
+}
 
-    const obj = {}
-    obj.val = (val === undefined ? 0 : val)
-    obj.next = (next?.length === 0 ? null : ListNode(...next))
-    return obj
+ListNode.prototype.toString = ListNode.prototype.valueOf = function () {
+    const result = []
+    let self = this
+    while (self) {
+        result.push(self.val)
+        self = self.next
+    }
+    return result
 }
 
 module.exports = {

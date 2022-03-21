@@ -44,10 +44,12 @@ var addTwoNumbers = function (l1, l2) {
         index++
     }
 
-    let result = ListNode()
+    if (sum === 0) return new ListNode()
+
+    let result = new ListNode()
     const tmp = result
     while (sum > 0) {
-        result.next = ListNode(sum % 10)
+        result.next = new ListNode(sum % 10)
         sum = Math.floor(sum / 10)
         result = result.next
     }
@@ -55,6 +57,12 @@ var addTwoNumbers = function (l1, l2) {
     return tmp.next
 }
 
-assert.deepEqual(addTwoNumbers(ListNode(2, 4, 3), ListNode(5, 6, 4)), ListNode(7, 0, 8))
-assert.deepEqual(addTwoNumbers(ListNode(9, 9, 9, 9, 9, 9, 9), ListNode(9, 9, 9, 9)), ListNode(8, 9, 9, 9, 0, 0, 0, 1))
 
+// assert.deepEqual(addTwoNumbers(new ListNode(2, 4, 3), new ListNode(5, 6, 4)), new ListNode(7, 0, 8))
+// assert.deepEqual(addTwoNumbers(new ListNode(9, 9, 9, 9, 9, 9, 9), new ListNode(9, 9, 9, 9)), new ListNode(8, 9, 9, 9, 0, 0, 0, 1))
+// assert.deepEqual(addTwoNumbers(new ListNode(), new ListNode()), new ListNode())
+assert.deepEqual(
+    addTwoNumbers(
+        new ListNode(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1), 
+        new ListNode(5, 6, 4)),
+    new ListNode(6, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1))
