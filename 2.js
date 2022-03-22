@@ -32,37 +32,33 @@ const assert = require('assert')
 const { ListNode } = require('./struct')
 
 var addTwoNumbers = function (l1, l2) {
-    const arr1 = []
-    const arr2 = []
-    let index = 0
-    let sum = 0
-
+    let addNum = 0
+    let tmp = new ListNode()
+    const result = tmp
     while (l1 || l2) {
-        sum += ((l1?.val || 0) + (l2?.val || 0)) * Math.pow(10, index)
+        const l1Value = l1?.val || 0
+        const l2Value = l2?.val || 0
+        const sum = l1Value + l2Value + addNum
+        addNum = Math.floor(sum / 10)
+        tmp.next = new ListNode(sum % 10)
+        tmp = tmp.next
+        
         l1 = l1?.next
         l2 = l2?.next
-        index++
+    }
+  
+    if (addNum !== 0) {
+        tmp.next = new ListNode(addNum)
     }
 
-    if (sum === 0) return new ListNode()
-
-    let result = new ListNode()
-    const tmp = result
-    while (sum > 0) {
-        result.next = new ListNode(sum % 10)
-        sum = Math.floor(sum / 10)
-        result = result.next
-    }
-
-    return tmp.next
+    return result.next
 }
 
-
-// assert.deepEqual(addTwoNumbers(new ListNode(2, 4, 3), new ListNode(5, 6, 4)), new ListNode(7, 0, 8))
-// assert.deepEqual(addTwoNumbers(new ListNode(9, 9, 9, 9, 9, 9, 9), new ListNode(9, 9, 9, 9)), new ListNode(8, 9, 9, 9, 0, 0, 0, 1))
-// assert.deepEqual(addTwoNumbers(new ListNode(), new ListNode()), new ListNode())
+assert.deepEqual(addTwoNumbers(new ListNode(2, 4, 3), new ListNode(5, 6, 4)), new ListNode(7, 0, 8))
+assert.deepEqual(addTwoNumbers(new ListNode(9, 9, 9, 9, 9, 9, 9), new ListNode(9, 9, 9, 9)), new ListNode(8, 9, 9, 9, 0, 0, 0, 1))
+assert.deepEqual(addTwoNumbers(new ListNode(), new ListNode()), new ListNode())
 assert.deepEqual(
     addTwoNumbers(
-        new ListNode(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1), 
+        new ListNode(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
         new ListNode(5, 6, 4)),
     new ListNode(6, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1))
