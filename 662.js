@@ -65,9 +65,10 @@ const withOfBinaryTree = root => {
         if (left[depth] === undefined) {
             left[depth] = pos
         }
+
         max = Math.max(max, pos - left[depth] + 1)
-        loop(node.left, depth + 1, pos * 2)
-        loop(node.right, depth + 1, pos * 2 + 1)
+        loop(node.left, depth + 1, (pos - left[depth]) * 2)
+        loop(node.right, depth + 1, (pos - left[depth]) * 2 + 1)
     }
 
     loop(root)
