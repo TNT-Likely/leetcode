@@ -22,14 +22,44 @@
 
 const assert = require('assert')
 
+const isValid = s => {
+    const tmp = []
+    const len = s.length
+    let i = 0
+    while (i < len) {
+        const char = s[i]
+        const lastChar = tmp[tmp.length - 1]
+        if (lastChar === '(' && char === ')') {
+            tmp.pop()
+        } else {
+            tmp.push(s[i])
+        }
+
+        i++
+    }
+
+    return tmp.length === 0
+}
+
 var generateParenthesis = function (n) {
     const result = []
-    let i = 0
-    while(i <=n) {
-        let j = n - i
-        
-        
+
+    const generate = (current, pos, result) => {
+        if (pos === current.length) {
+            if (isValid(current.join(''))) {
+                result.push(current.join(''))
+            }
+      
+        } else {
+            current[pos] = '('
+            generate(current, pos + 1, result)
+            current[pos] = ')'
+            generate(current, pos + 1, result)
+        }
     }
+
+    generate(new Array(n * 2), 0, result)
+
     return result
 };
 
