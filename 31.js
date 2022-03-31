@@ -34,30 +34,43 @@
 
 const assert = require('assert')
 
+
+const reverse = (nums, start) => {
+    let left = start
+    let right = nums.length - 1
+
+    while (left < right) {
+        const tmp = nums[right]
+        nums[right] = nums[left]
+        nums[left] = tmp
+        left++
+        right--
+    }
+
+    return nums
+}
+
 const nextPermutation = function (nums) {
     if (nums.length <= 1) return nums
     const length = nums.length
+
     let i = length - 2
-
-    while (i >= 0) {
-        if (nums[i] < nums[i + 1]) {
-            let j = length - 1
-            while (j > i) {
-                if (nums[i] < nums[j]) {
-                    const tmp = nums[i]
-                    nums[i] = nums[j]
-                    nums[j] = tmp
-
-                    return nums.slice(0, i + 1).concat(nums.slice(i + 1, length).reverse())
-                }
-                j--
-            }
-        }
-
+    while (i >= 0 && nums[i] >= nums[i + 1]) {
         i--
     }
 
-    return nums.reverse()
+    if (i >= 0) {
+        let j = length - 1
+        while (j >= 0 && nums[i] >= nums[j]) {
+            j--
+        }
+
+        const tmp = nums[i]
+        nums[i] = nums[j]
+        nums[j] = tmp
+    }
+
+    return reverse(nums, i + 1)
 }
 
 assert.deepEqual(nextPermutation(
