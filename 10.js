@@ -33,48 +33,56 @@
 
 const assert = require('assert')
 
+
+const match = (s, p, i, j) => {
+    if (i === 0) {
+        return false
+    }
+    if (p[j - 1] === '.') {
+        return true
+    }
+    return s[i - 1] === p[j - 1]
+}
+
+
 const isMatch = function (s, p) {
     const m = s.length
     const n = p.length
-    let i = 0
-    let j = 0
-    let hasMany = false
-    let hasManyChar = ''
-    while (i < m) {
-        const charS = s[i]
-        const charP = p[j]
+    const f = []
 
-        if (charS === undefined && charP !== undefined) {
-            return false
-        }
-
-        if (charP === '*') {
-            hasMany = true
-            hasManyChar = p[j - 1]
-        } else if (charP !== undefined) {
-            hasMany = false
-            hasManyChar = ''
-        }
-
-        if (charS !== charP) {
-            if (charP === '.') {
-                i++
-                j++
-            } else if (hasMany && (hasManyChar === charS || hasManyChar === '.')) {
-                i++
-                j++
-            } else if (p[j + 1] === '*') {
-                j += 2
-            } else {
-                return false
+    for (let i = 0; i <= m; i++) {
+        for (let j = 0; j <= n; j++) {
+            if (!f[i]) {
+                f[i] = []
             }
-        } else {
-            i++
-            j++
+
+            f[i][j] = false
         }
     }
 
-    return true
+    f[0][0] = true
+
+    let i = 0;
+    while (i <= m) {
+        let j = 1
+        while (j <= n) {
+            if (p[j - 1] === '*') {
+                f[i][j] = f[i][j - 2]
+                if (match(s, p, i, j - 1)) {
+                    f[i][j] = f[i][j] || f[i - 1][j]
+                }
+
+            } else {
+                if (match(s, p, i, j)) {
+                    f[i][j] = f[i - 1][j - 1]
+                }
+            }
+            j++
+        }
+        i++
+    }
+
+    return f[m][n]
 }
 
 assert.deepEqual(isMatch(
